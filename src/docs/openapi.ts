@@ -5,8 +5,10 @@ import {
 } from "@asteasolutions/zod-to-openapi";
 import { z } from "zod";
 import { env } from "../config";
-import { registerAuthOpenApi } from "../modules/auth/auth.routes";
-import { registerAddressOpenApi } from "../modules/address/address.routes";
+import { registerAuthOpenApi } from "../modules/auth/routes";
+import { registerAddressOpenApi } from "../modules/address/routes";
+import { registerWasteTransactionOpenApi } from "../modules/waste-transaction/routes";
+import { registerUserOpenApi } from "../modules/user/route";
 
 extendZodWithOpenApi(z);
 
@@ -19,7 +21,9 @@ registry.registerComponent("securitySchemes", "cookieAuth", {
 });
 
 registerAuthOpenApi(registry);
+registerUserOpenApi(registry);
 registerAddressOpenApi(registry);
+registerWasteTransactionOpenApi(registry);
 
 export const openApiDocument = new OpenApiGeneratorV3(registry.definitions).generateDocument({
   openapi: "3.0.3",

@@ -2,10 +2,12 @@ import "./config";
 import express from "express";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
-import { authRouter } from "./modules/auth/auth.routes";
-import { addressRouter } from "./modules/address/address.routes";
+import { authRouter } from "./modules/auth/routes";
+import { addressRouter } from "./modules/address/routes";
+import { wasteTransactionRouter } from "./modules/waste-transaction/routes";
+import { userRouter } from "./modules/user/route";
 import { env } from "./config";
-import { errorHandler, notFoundHandler } from "./middlewares/error.middleware";
+import { errorHandler, notFoundHandler } from "./middlewares/error";
 import cors from "cors";
 import { openApiDocument } from "./docs/openapi";
 
@@ -21,12 +23,14 @@ app.use(
 );
 
 app.get("/health", (_req, res) => {
-	res.status(200).json({ status: "ok" });
+  res.status(200).json({ status: "ok" });
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 app.use("/auth", authRouter);
+app.use("/", userRouter);
 app.use("/", addressRouter);
+app.use("/", wasteTransactionRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

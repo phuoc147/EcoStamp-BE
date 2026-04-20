@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import type { ApiErrorResponse, ApiSuccessResponse } from "../dto/api-response.dto";
+import type { ApiErrorResponse, ApiSuccessResponse } from "../dto/api-response";
 
 export const sendSuccess = <T>(
   res: Response,
