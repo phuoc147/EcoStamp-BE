@@ -13,5 +13,8 @@ export * from "./green-station";
 export * from "./waste-type";
 export * from "./waste-transaction";
 export * from "./waste-transaction-event";
+export * from "./waste-point-rule";
+export * from "./point-transaction";
+export * from "./station-waste-type";
 export * from "./green-station-location";
 export * from "./station-attendance";

@@ -392,47 +392,47 @@ export const registerAuthOpenApi = (registry: OpenAPIRegistry): void => {
         in: "path",
         required: true,
         schema: {
-          type: "string", // hoặc "number" tùy DB của bạn
+          type: "string",
         },
       },
     ],
 
     responses: {
-		200: {
-			description: "Request approved",
-			content: {
-			"application/json": {
-				schema: apiSuccess(approveStationJoinRequestRes),
-			},
-			},
-		},
-		401: {
-			description: "Unauthorized",
-			content: {
-			"application/json": {
-				schema: apiError,
-			},
-			},
-		},
-		403: {
-			description: "Forbidden",
-			content: {
-			"application/json": {
-				schema: apiError,
-			},
-			},
-		},
-		404: {
-			description: "Request not found",
-			content: {
-			"application/json": {
-				schema: apiError,
-			},
-			},
-		},
-		},
-	});
-	registry.registerPath({
+      200: {
+        description: "Request approved",
+        content: {
+          "application/json": {
+            schema: apiSuccess(approveStationJoinRequestRes),
+          },
+        },
+      },
+      401: {
+        description: "Unauthorized",
+        content: {
+          "application/json": {
+            schema: apiError,
+          },
+        },
+      },
+      403: {
+        description: "Forbidden",
+        content: {
+          "application/json": {
+            schema: apiError,
+          },
+        },
+      },
+      404: {
+        description: "Request not found",
+        content: {
+          "application/json": {
+            schema: apiError,
+          },
+        },
+      },
+    },
+  });
+  registry.registerPath({
     method: "post",
     path: "/auth/station-join-requests/{requestId}/reject",
     tags: ["Auth"],
@@ -443,7 +443,7 @@ export const registerAuthOpenApi = (registry: OpenAPIRegistry): void => {
         in: "path",
         required: true,
         schema: {
-          type: "string", // hoặc "number" tùy DB của bạn
+          type: "string",
         },
       },
     ],

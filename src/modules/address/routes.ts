@@ -81,6 +81,16 @@ export const registerAddressOpenApi = (registry: OpenAPIRegistry): void => {
     path: "/locations/countries/{id}",
     tags: ["Location"],
     summary: "Get country detail",
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     responses: {
       200: {
         description: "Country fetched",
@@ -106,6 +116,16 @@ export const registerAddressOpenApi = (registry: OpenAPIRegistry): void => {
     path: "/locations/countries/{countryId}/levels",
     tags: ["Location"],
     summary: "List admin level definitions by country",
+    parameters: [
+      {
+        name: "countryId",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     responses: {
       200: {
         description: "Admin levels fetched",
@@ -167,6 +187,16 @@ export const registerAddressOpenApi = (registry: OpenAPIRegistry): void => {
     path: "/locations/units/{id}/children",
     tags: ["Location"],
     summary: "List child administrative units",
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     responses: {
       200: {
         description: "Children fetched",
@@ -192,6 +222,16 @@ export const registerAddressOpenApi = (registry: OpenAPIRegistry): void => {
     path: "/locations/units/{id}/path",
     tags: ["Location"],
     summary: "Get administrative unit breadcrumb path",
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     responses: {
       200: {
         description: "Path fetched",
@@ -319,6 +359,16 @@ export const registerAddressOpenApi = (registry: OpenAPIRegistry): void => {
     tags: ["Location"],
     summary: "Update current user location",
     security: [{ cookieAuth: [] }],
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     request: {
       body: {
         required: true,
@@ -371,6 +421,16 @@ export const registerAddressOpenApi = (registry: OpenAPIRegistry): void => {
     tags: ["Location"],
     summary: "Delete current user location",
     security: [{ cookieAuth: [] }],
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     responses: {
       200: {
         description: "User location deleted",

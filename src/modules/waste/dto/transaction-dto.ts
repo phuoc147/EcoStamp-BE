@@ -5,11 +5,7 @@ const pagination = z.object({
   limit: z.coerce.number().int().positive().max(100).optional().default(20),
 });
 
-export const wasteTxStatus = z.enum([
-  "PENDING",
-  "APPROVED",
-  "REJECTED",
-]);
+export const wasteTxStatus = z.enum(["PENDING", "APPROVED", "REJECTED"]);
 
 export const createWasteTxReq = z.object({
   stationId: z.string().uuid(),
@@ -26,6 +22,8 @@ export const updateWasteTxStatusReq = z.object({
 
 export const listWasteTxReq = pagination.extend({
   status: wasteTxStatus.optional(),
+  stationId: z.string().uuid().optional(),
+  userId: z.string().uuid().optional(),
 });
 
 export const wasteTxRes = z.object({
@@ -55,21 +53,14 @@ export const getWasteTxRes = z.object({
 
 export const updateWasteTxStatusRes = z.object({
   transaction: wasteTxRes,
+  pointsAwarded: z.number().nonnegative().optional(),
 });
 
 export type WasteTxStatus = z.infer<typeof wasteTxStatus>;
 export type CreateWasteTxReq = z.infer<typeof createWasteTxReq>;
-export type UpdateWasteTxStatusReq = z.infer<
-  typeof updateWasteTxStatusReq
->;
+export type UpdateWasteTxStatusReq = z.infer<typeof updateWasteTxStatusReq>;
 export type ListWasteTxReq = z.infer<typeof listWasteTxReq>;
-export type CreateWasteTxRes = z.infer<
-  typeof createWasteTxRes
->;
-export type ListWasteTxRes = z.infer<
-  typeof listWasteTxRes
->;
+export type CreateWasteTxRes = z.infer<typeof createWasteTxRes>;
+export type ListWasteTxRes = z.infer<typeof listWasteTxRes>;
 export type GetWasteTxRes = z.infer<typeof getWasteTxRes>;
-export type UpdateWasteTxStatusRes = z.infer<
-  typeof updateWasteTxStatusRes
->;
+export type UpdateWasteTxStatusRes = z.infer<typeof updateWasteTxStatusRes>;

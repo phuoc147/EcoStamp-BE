@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
 import { authRouter } from "./modules/auth/routes";
 import { addressRouter } from "./modules/address/routes";
-import { wasteTransactionRouter } from "./modules/waste-transaction/routes";
+import { wasteRouter } from "./modules/waste/route";
 import { userRouter } from "./modules/user/route";
 import { env } from "./config";
 import { errorHandler, notFoundHandler } from "./middlewares/error";
@@ -30,7 +30,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 app.use("/auth", authRouter);
 app.use("/", userRouter);
 app.use("/", addressRouter);
-app.use("/", wasteTransactionRouter);
+app.use("/", wasteRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

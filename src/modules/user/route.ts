@@ -38,38 +38,48 @@ export const registerUserOpenApi = (registry: OpenAPIRegistry): void => {
 	});
 
 	registry.registerPath({
-		method: "get",
-		path: "/users/stations/{code}",
-		tags: ["User"],
-		summary: "Get station profile by station code",
-		security: [{ cookieAuth: [] }],
-		responses: {
-			200: {
-				description: "Station profile fetched",
-				content: {
-					"application/json": {
-						schema: apiSuccess(stationProfileRes),
-					},
-				},
-			},
-			401: {
-				description: "Unauthorized",
-				content: {
-					"application/json": {
-						schema: apiError,
-					},
-				},
-			},
-			404: {
-				description: "Station not found",
-				content: {
-					"application/json": {
-						schema: apiError,
-					},
-				},
-			},
-		},
-	});
+    method: "get",
+    path: "/users/stations/{code}",
+    tags: ["User"],
+    summary: "Get station profile by station code",
+    security: [{ cookieAuth: [] }],
+    parameters: [
+      {
+        name: "code",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
+    responses: {
+      200: {
+        description: "Station profile fetched",
+        content: {
+          "application/json": {
+            schema: apiSuccess(stationProfileRes),
+          },
+        },
+      },
+      401: {
+        description: "Unauthorized",
+        content: {
+          "application/json": {
+            schema: apiError,
+          },
+        },
+      },
+      404: {
+        description: "Station not found",
+        content: {
+          "application/json": {
+            schema: apiError,
+          },
+        },
+      },
+    },
+  });
 };
 
 export { userRouter };

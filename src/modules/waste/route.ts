@@ -1,13 +1,13 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import { Router } from "express";
 import { apiError, apiSuccess } from "../../common/dto/api-response";
-import { employeeOrPartnerAuth } from "../../middlewares/auth";
+import { auth, employeeOrPartnerAuth } from "../../middlewares/auth";
 import {
   createWasteTransaction,
   getWasteTransaction,
   listWasteTransactions,
   updateWasteTransactionStatus,
-} from "./controller";
+} from "./controllers/transaction-controller";
 import {
   createWasteTxReq,
   createWasteTxRes,
@@ -18,22 +18,22 @@ import {
   updateWasteTxStatusRes,
 } from "./dto";
 
-const wasteTransactionRouter = Router();
+const wasteRouter = Router();
 
-wasteTransactionRouter.post("/waste-transactions", ...employeeOrPartnerAuth, createWasteTransaction);
-wasteTransactionRouter.get("/waste-transactions", ...employeeOrPartnerAuth, listWasteTransactions);
-wasteTransactionRouter.get("/waste-transactions/:id", ...employeeOrPartnerAuth, getWasteTransaction);
-wasteTransactionRouter.patch(
+wasteRouter.post("/waste-transactions", ...employeeOrPartnerAuth, createWasteTransaction);
+wasteRouter.get("/waste-transactions", auth, listWasteTransactions);
+wasteRouter.get("/waste-transactions/:id", auth, getWasteTransaction);
+wasteRouter.patch(
   "/waste-transactions/:id/status",
   ...employeeOrPartnerAuth,
   updateWasteTransactionStatus,
 );
 
-export const registerWasteTransactionOpenApi = (registry: OpenAPIRegistry): void => {
+export const registerWasteOpenApi = (registry: OpenAPIRegistry): void => {
   registry.registerPath({
     method: "post",
     path: "/waste-transactions",
-    tags: ["WasteTransaction"],
+    tags: ["Waste"],
     summary: "Create waste transaction (EMPLOYEE/PARTNER)",
     security: [{ cookieAuth: [] }],
     request: {
@@ -85,8 +85,8 @@ export const registerWasteTransactionOpenApi = (registry: OpenAPIRegistry): void
   registry.registerPath({
     method: "get",
     path: "/waste-transactions",
-    tags: ["WasteTransaction"],
-    summary: "List waste transactions for current actor",
+    tags: ["Waste"],
+    summary: "List waste transactions history",
     security: [{ cookieAuth: [] }],
     request: {
       query: listWasteTxReq,
@@ -122,9 +122,19 @@ export const registerWasteTransactionOpenApi = (registry: OpenAPIRegistry): void
   registry.registerPath({
     method: "get",
     path: "/waste-transactions/{id}",
-    tags: ["WasteTransaction"],
+    tags: ["Waste"],
     summary: "Get waste transaction detail",
     security: [{ cookieAuth: [] }],
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     responses: {
       200: {
         description: "Waste transaction fetched",
@@ -164,9 +174,19 @@ export const registerWasteTransactionOpenApi = (registry: OpenAPIRegistry): void
   registry.registerPath({
     method: "patch",
     path: "/waste-transactions/{id}/status",
-    tags: ["WasteTransaction"],
-    summary: "Update waste transaction status",
+    tags: ["Waste"],
+    summary: "Approve or reject waste transaction",
     security: [{ cookieAuth: [] }],
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     request: {
       body: {
         required: true,
@@ -218,8 +238,16 @@ export const registerWasteTransactionOpenApi = (registry: OpenAPIRegistry): void
           },
         },
       },
+      409: {
+        description: "Business conflict",
+        content: {
+          "application/json": {
+            schema: apiError,
+          },
+        },
+      },
     },
   });
 };
 
-export { wasteTransactionRouter };
+export { wasteRouter };

@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { sendSuccess } from "../../common/http/response";
-import { HttpError } from "../../middlewares/error";
+import { sendSuccess } from "../../../common/http/response";
+import { HttpError } from "../../../middlewares/error";
 import {
   createWasteTxReq,
   listWasteTxReq,
@@ -10,9 +10,9 @@ import {
   type GetWasteTxRes,
   type ListWasteTxRes,
   type UpdateWasteTxStatusRes,
-} from "./dto";
-import { WasteTransactionRepository } from "./repository";
-import { WasteTransactionService } from "./service";
+} from "../dto";
+import { WasteTransactionRepository } from "../repository";
+import { WasteTransactionService } from "../services";
 
 const service = new WasteTransactionService(new WasteTransactionRepository());
 
@@ -139,19 +139,21 @@ export const updateWasteTransactionStatus = async (
     }
 
     const transactionId = getRequiredParam(req.params.id, "id");
-
     const parsed = updateWasteTxStatusReq.safeParse(req.body);
 
     if (!parsed.success) {
       throw new HttpError(400, "Invalid payload");
     }
 
-    const transaction = await service.updateStatus(req.user, transactionId, parsed.data);
+    const result = await service.updateStatus(req.user, transactionId, parsed.data);
 
     sendSuccess<UpdateWasteTxStatusRes>(
       res,
       200,
-      { transaction: toWasteTransactionResponse(transaction) },
+      {
+        transaction: toWasteTransactionResponse(result.transaction),
+        pointsAwarded: result.pointsAwarded,
+      },
       "Waste transaction status updated",
     );
   } catch (error) {
